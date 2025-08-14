@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace RefactorThis.Persistence
@@ -7,8 +8,9 @@ namespace RefactorThis.Persistence
 		private readonly InvoiceRepository _repository;
 		public Invoice( InvoiceRepository repository )
 		{
-			_repository = repository;
-		}
+            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            Payments = new List<Payment>(); // Initialize to avoid null
+        }
 
 		public void Save( )
 		{
@@ -26,6 +28,7 @@ namespace RefactorThis.Persistence
 	public enum InvoiceType
 	{
 		Standard,
-		Commercial
+		Commercial,
+		Other
 	}
 }
