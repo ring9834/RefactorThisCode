@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using RefactorThis.Persistence;
 
@@ -7,11 +8,17 @@ namespace RefactorThis.Domain
 	public class InvoiceService
 	{
 		private readonly InvoiceRepository _invoiceRepository;
+        private readonly Dictionary<InvoiceType, IInvoiceTypeHandler> _handlers;
 
-		public InvoiceService( InvoiceRepository invoiceRepository )
+        public InvoiceService( InvoiceRepository invoiceRepository )
 		{
 			_invoiceRepository = invoiceRepository;
-		}
+            _handlers = new Dictionary<InvoiceType, IInvoiceTypeHandler>
+            {
+                { InvoiceType.Standard, new StandardInvoiceHandler() },
+                { InvoiceType.Commercial, new CommercialInvoiceHandler() }
+            };
+        }
 
 		public string ProcessPayment( Payment payment )
 		{
