@@ -12,7 +12,7 @@ namespace RefactorThis.Domain
 
         public InvoiceService( InvoiceRepository invoiceRepository )
 		{
-			_invoiceRepository = invoiceRepository;
+            _invoiceRepository = invoiceRepository ?? throw new ArgumentNullException(nameof(invoiceRepository));
             _handlers = new Dictionary<InvoiceType, IInvoiceTypeHandler>
             {
                 { InvoiceType.Standard, new StandardInvoiceHandler() },
